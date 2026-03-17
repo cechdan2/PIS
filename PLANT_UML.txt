@@ -1,0 +1,93 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+
+package "GRAPP Domain Model" {
+
+    class Souradnice <<Value Object>> {
+        + latitude: double
+        + longitude: double
+    }
+
+    class Mapa {
+        - mapovyPodklad: String
+        - aktualniZoom: int
+        + vykresliObjekty(): void
+        + aplikujFiltr(f: Filtr): void
+        + obnovData(intervalMs: int): void
+    }
+
+    class Vlak {
+        - idVlaku: String
+        - cisloVlaku: String
+        - nazevVlaku: String
+        - /zpozdeniMinuty: int <<derived>>
+        - posledniAktualizace: DateTime
+        + ziskejAktualniZpozdeni(): int
+        + zobrazDetail(): void
+    }
+
+    class TypVlaku <<Enumeration>> {
+        - kod: String
+        - popis: String
+        - barvaIkony: String
+    }
+
+    class Dopravce {
+        - kodDopravce: String
+        - nazev: String
+        - barvaHex: String
+    }
+
+    class Trasa {
+        - idTrasy: String
+        - delkaKm: float
+        - platiOd: Date
+        - aktivni: boolean
+        + ziskejVychoziStanici(): Stanice
+        + ziskejCilovouStanici(): Stanice
+    }
+
+    class Zastavka {
+        - pravidelnyPrijezd: DateTime
+        - pravidelnyOdjezd: DateTime
+        - ocekavanyPrijezd: DateTime
+        - ocekavanyOdjezd: DateTime
+        - kolej: String
+        - nastupiste: String
+        - projizdi: boolean
+        + jeZpozdena(): boolean
+    }
+
+    class Stanice {
+        - sr70: int
+        - nazev: String
+        + generujOdjezdovouTabuli(): List<Zastavka>
+    }
+
+    class Filtr {
+        - hledaneCislo: String
+        - skrytaZpozdeniDo: int
+        + pridejDopravce(d: Dopravce): void
+        + pridejTypVlaku(t: TypVlaku): void
+        + splnujePodminky(v: Vlak): boolean
+    }
+
+    ' Vztahy
+    Mapa "1" *-- "0..*" Vlak : zobrazuje
+    Mapa "1" *-- "0..*" Stanice : zobrazuje
+    Mapa "1" o-- "1" Filtr : používá
+
+    Mapa *-- Souradnice : stredMapy
+    Vlak *-- Souradnice : poloha
+    Stanice *-- Souradnice : poloha
+
+    Vlak "1" -- "1" Dopravce : je provozován >
+    Vlak "1" -- "1" TypVlaku : je klasifikován jako >
+    Vlak "1" *-- "1" Trasa : projíždí >
+
+    Trasa "1" *-- "2..*" Zastavka : skládá se z >
+    Zastavka "*" -- "1" Stanice : fyzicky leží v >
+
+}
+@enduml

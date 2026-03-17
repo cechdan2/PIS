@@ -5,72 +5,72 @@ skinparam monochrome true
 package "GRAPP Domain Model" {
 
     class Souradnice <<Value Object>> {
-        + latitude: double
-        + longitude: double
+        public latitude: double
+        public longitude: double
     }
 
     class Mapa {
-        - mapovyPodklad: String
-        - aktualniZoom: int
-        + vykresliObjekty(): void
-        + aplikujFiltr(f: Filtr): void
-        + obnovData(intervalMs: int): void
+        private mapovyPodklad: String
+        private aktualniZoom: int
+        public vykresliObjekty(): void
+        public aplikujFiltr(f: Filtr): void
+        public obnovData(intervalMs: int): void
     }
 
     class Vlak {
-        - idVlaku: String
-        - cisloVlaku: String
-        - nazevVlaku: String
-        - /zpozdeniMinuty: int <<derived>>
-        - posledniAktualizace: DateTime
-        + ziskejAktualniZpozdeni(): int
-        + zobrazDetail(): void
+        private idVlaku: String
+        private cisloVlaku: String
+        private nazevVlaku: String
+        private /zpozdeniMinuty: int <<derived>>
+        private posledniAktualizace: DateTime
+        public ziskejAktualniZpozdeni(): int
+        public zobrazDetail(): void
     }
 
     class TypVlaku <<Enumeration>> {
-        - kod: String
-        - popis: String
-        - barvaIkony: String
+        private kod: String
+        private popis: String
+        private barvaIkony: String
     }
 
     class Dopravce {
-        - kodDopravce: String
-        - nazev: String
-        - barvaHex: String
+        private kodDopravce: String
+        private nazev: String
+        private barvaHex: String
     }
 
     class Trasa {
-        - idTrasy: String
-        - delkaKm: float
-        - platiOd: Date
-        - aktivni: boolean
-        + ziskejVychoziStanici(): Stanice
-        + ziskejCilovouStanici(): Stanice
+        private idTrasy: String
+        private delkaKm: float
+        private platiOd: Date
+        private aktivni: boolean
+        public ziskejVychoziStanici(): Stanice
+        public ziskejCilovouStanici(): Stanice
     }
 
     class Zastavka {
-        - pravidelnyPrijezd: DateTime
-        - pravidelnyOdjezd: DateTime
-        - ocekavanyPrijezd: DateTime
-        - ocekavanyOdjezd: DateTime
-        - kolej: String
-        - nastupiste: String
-        - projizdi: boolean
-        + jeZpozdena(): boolean
+        private pravidelnyPrijezd: DateTime
+        private pravidelnyOdjezd: DateTime
+        private ocekavanyPrijezd: DateTime
+        private ocekavanyOdjezd: DateTime
+        private kolej: String
+        private nastupiste: String
+        private projizdi: boolean
+        public jeZpozdena(): boolean
     }
 
     class Stanice {
-        - sr70: int
-        - nazev: String
-        + generujOdjezdovouTabuli(): List<Zastavka>
+        private sr70: int
+        private nazev: String
+        public generujOdjezdovouTabuli(): List<Zastavka>
     }
 
     class Filtr {
-        - hledaneCislo: String
-        - skrytaZpozdeniDo: int
-        + pridejDopravce(d: Dopravce): void
-        + pridejTypVlaku(t: TypVlaku): void
-        + splnujePodminky(v: Vlak): boolean
+        private hledaneCislo: String
+        private skrytaZpozdeniDo: int
+        public pridejDopravce(d: Dopravce): void
+        public pridejTypVlaku(t: TypVlaku): void
+        public splnujePodminky(v: Vlak): boolean
     }
 
     ' Vztahy

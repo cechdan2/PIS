@@ -82,7 +82,7 @@ package "GRAPP Domain Model" {
     Vlak *-- Souradnice : poloha
     Stanice *-- Souradnice : poloha
 
-    Vlak "1" -- "1" Dopravce : je provozován >
+    Vlak "N" -- "1" Dopravce : je provozován >
     Vlak "1" -- "1" TypVlaku : je klasifikován jako >
     Vlak "1" *-- "1" Trasa : projíždí >
 
